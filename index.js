@@ -19,7 +19,7 @@ function computerPlay() {
     else if (randomNumber === 3) {
         computerSelection = scissor;
         return computerSelection;
-    }
+    }                               // change
 }
 
 function playRound(playerSelection, computerSelection) {
