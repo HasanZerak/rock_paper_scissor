@@ -27,63 +27,82 @@ function playRound(playerSelection, computerSelection) {
 
     // Adding conditional statements to play a single game
     if (playerSelection === computerSelection) {          //returning a draw statement if both the selection are same.
-        return "It's a DRAW.";
+        display.textContent = "It's a DRAW.";
     }
     else {
         if (playerSelection === rock) {           //if plater selects rock, conditionals to check if they win or not 
             if (computerSelection === paper) {    //by comparng user selection with computer selection.
-                return "You Lose.";
+                display.textContent = "You Lost this round.";
+                them += 1;
             }
             else if (computerSelection === scissor) {
-                return "You Win";
+                display.textContent = "You Won this round.";
+                us += 1;
             }
         }
         if (playerSelection === paper) {              //""
             if (computerSelection === scissor) {
-                return "You Lose.";
+                display.textContent = "You Lost this round";
+                them += 1;
             }
             else if (computerSelection === rock) {
-                return "You Win";
+                display.textContent = "You Won this round. ";
+                us += 1;
             }
         }
         if (playerSelection === scissor) {            //""
             if (computerSelection === rock) {
-                return "You Lose.";
+                display.textContent = "You Lost this round.";
+                them += 1;
             }
             else if (computerSelection === paper) {
-                return "You Win";
+                display.textContent = "You Won this round.";
+                us += 1;
             }
         }
     }
+    singleResult.textContent = `Computer : ${them}       You : ${us}`;
 
 }
 
 function game() {
-    let us = 0;         //declaring two variables to record scores.
-    let them = 0;
-    for (let i = 0; i < 5; i++) {          //loop to play a 5 round game
-        computerSelection = computerPlay();         //getting a computer generated random output.
-        let playerSelection = prompt("Throw your hand.");           //asking the user to make a choice.
-        let result = playRound(playerSelection, computerSelection);         //storing the return statement to calculate the winner of each round.
+    if (them === 5) {
+        finalGame.textContent = "You lost, Computer Won.";
+        return true;
+    }
+    else if (us === 5) {
+        finalGame.textContent = "You Won, Congratulations!!";
+        return true;
+    }
+    else {
+        finalGame.textContent = " ";
+        return false;
+    }
 
-        console.log(result);            //outputs the winner of each round.
-
-        if (result === "You Lose.") {          //conditional staement to check who the winner of eack round is and updating the score each time based on the result.
-            ++them;
-        }
-        else {
-            ++us;
-        }
-    }
-    if (them > us) {          //checking who the final winner is and throwing out a result statement based on it.
-        alert("You Lose.");
-    }
-    else if (us > them) {
-        alert("You Win!!!");
-    }
-    else if (us === them) {
-        alert("draw.");
-    }
 }
 
-game();
+let options = document.querySelectorAll(".options");
+let show = document.querySelector(".show");
+let display = document.createElement('div');
+let singleResult = document.createElement('div');
+let finalGame = document.createElement('div');
+
+let us = 0;         //declaring two variables to record scores.
+let them = 0;
+
+options.forEach((option) => {
+    option.addEventListener("click", function () {
+        let playerSelection = this.textContent;
+        playRound(playerSelection, computerPlay());
+
+
+        show.appendChild(display);
+        display.appendChild(singleResult);
+        singleResult.appendChild(finalGame);
+        if (game()) {
+            them = 0;
+            us = 0;
+
+        }
+    });
+});
